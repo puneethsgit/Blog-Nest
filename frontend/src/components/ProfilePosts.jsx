@@ -1,12 +1,14 @@
-const HomePosts = () => {
+
+const ProfilePosts = () => {
   return (
     <div className="w-full flex mt-8 space-x-6 ">
       {/* left */}
       <div className=" w-[35%] h-[200px] flex justify-center items-center ">
         <img
+
           src="https://oasis.opstatics.com/content/dam/oasis/page/brand/blog/insight-into-the-materials-oneplus-chooses-for-its-devices/1600x720.jpg"
           alt=""
-          className="w-full h-full object-cover"
+           className="w-full h-full object-cover"
         />
       </div>
       {/* right */}
@@ -14,7 +16,7 @@ const HomePosts = () => {
         <h1 className="text-xl font-bold md:mb-2 mb-1 md:text-2xl ">
           Smartphone Materials Q&A with OnePlus' COO & Head of R&D
         </h1>
-        <div className="flex mb-2 text-sm font-semibold text-gray-500  item-center justify-between md:mb-4 ">
+        <div className="flex mb-2 text-sm font-semibold text-gray-500  item-center md:mb-4 justify-between   ">
           <p>@oneplus dev </p>
           <div className="flex space-x-2">
             <p>16/06/2023</p>
@@ -34,7 +36,7 @@ const HomePosts = () => {
         </p>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default HomePosts;
+export default ProfilePosts
