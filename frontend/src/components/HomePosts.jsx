@@ -1,12 +1,13 @@
 const HomePosts = () => {
   return (
-    <div className="w-full flex mt-8 space-x-4 ">
+    <div className="w-full flex mt-8 space-x-6 ">
       {/* left */}
       <div className=" w-[35%] h-[200px] flex justify-center items-center ">
         <img
+
           src="https://oasis.opstatics.com/content/dam/oasis/page/brand/blog/insight-into-the-materials-oneplus-chooses-for-its-devices/1600x720.jpg"
           alt=""
-          className=""
+           className="w-full h-full object-cover"
         />
       </div>
       {/* right */}

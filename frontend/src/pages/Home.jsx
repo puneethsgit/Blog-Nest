@@ -1,10 +1,20 @@
-import HomePosts  from "../components/HomePosts";
+import HomePosts from "../components/HomePosts";
+import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
 
 function Home() {
   return (
-    <div className="px-8 md:px-[200px]">
-      <HomePosts />
-    </div>
+    <>
+      <Navbar />
+      <div className="px-8 md:px-[200px]">
+        <HomePosts />
+        <HomePosts />
+        <HomePosts />
+        <HomePosts />
+        <HomePosts />
+      </div>
+      <Footer />
+    </>
   );
 }
 
