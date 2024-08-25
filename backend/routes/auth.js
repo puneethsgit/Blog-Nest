@@ -4,12 +4,12 @@ const User = require("../models/User");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
-//REGISTER
+// REGISTER
 router.post("/register", async (req, res) => {
   try {
     const { username, email, password } = req.body;
     const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hashSync(password, salt);
+    const hashedPassword = await bcrypt.hash(password, salt);
     const newUser = new User({ username, email, password: hashedPassword });
     const savedUser = await newUser.save();
     res.status(200).json(savedUser);
@@ -18,7 +18,7 @@ router.post("/register", async (req, res) => {
   }
 });
 
-//LOGIN
+// LOGIN
 router.post("/login", async (req, res) => {
   try {
     const user = await User.findOne({ email: req.body.email });
@@ -37,17 +37,28 @@ router.post("/login", async (req, res) => {
       { expiresIn: "3d" }
     );
     const { password, ...info } = user._doc;
-    res.cookie("token", token).status(200).json(info);
+    res
+      .cookie("token", token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "none",
+      })
+      .status(200)
+      .json(info);
   } catch (err) {
     res.status(500).json(err);
   }
 });
 
-//LOGOUT
+// LOGOUT
 router.get("/logout", async (req, res) => {
   try {
     res
-      .clearCookie("token", { sameSite: "none", secure: true })
+      .clearCookie("token", {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "none",
+      })
       .status(200)
       .send("User logged out successfully!");
   } catch (err) {
@@ -55,12 +66,16 @@ router.get("/logout", async (req, res) => {
   }
 });
 
-//REFETCH USER
+// REFETCH USER
 router.get("/refetch", (req, res) => {
   const token = req.cookies.token;
+  if (!token) {
+    return res.status(401).json("No token provided!");
+  }
+
   jwt.verify(token, process.env.SECRET, {}, async (err, data) => {
     if (err) {
-      return res.status(404).json(err);
+      return res.status(403).json("Invalid token!");
     }
     res.status(200).json(data);
   });
