@@ -37,7 +37,7 @@ router.post("/login", async (req, res) => {
     }
 
     const token = jwt.sign({_id: user._id, username:user.username, email:user.email }, process.env.SECRET, {
-      expiresIn: "3d",
+      expiresIn: "3d", 
     });
 
     const { password, ...info } = user._doc;
@@ -66,7 +66,8 @@ router.get("/refetch",(req,res)=>{
     if(err){
       return res.status(404).json(err)
     }
-    res.status(200).json(data)
+    res.cookie("token", token, { httpOnly: true }).status(200).json(data); 
+    // res.status(200).json(data)
   })
 })
 
