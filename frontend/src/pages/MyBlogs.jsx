@@ -1,32 +1,29 @@
-import HomePosts from "../components/HomePosts";
-import Navbar from "../components/Navbar";
+import { Link, useLocation } from "react-router-dom";
 import Footer from "../components/Footer";
-import axios from "axios";
+import Navbar from "../components/Navbar";
 import { useContext, useEffect, useState } from "react";
-import { URL } from "../url";
-import { useLocation, Link } from "react-router-dom";
-import Loader from "../components/Loader";
 import { UserContext } from "../context/UserContext";
+import axios from "axios";
+import { URL } from "../url";
+import HomePosts from "../components/HomePosts";
+import Loader from "../components/Loader";
 
-function Home() {
+const MyBlogs = () => {
   const { search } = useLocation();
-
+  // console.log(search)
   const [posts, setPosts] = useState([]);
-
   const [noResults, setNoResults] = useState(false);
-
   const [loader, setLoader] = useState(false);
+  const { user } = useContext(UserContext);
+  // console.log(user)
 
-  const {user} = useContext(UserContext)
-
-  const fetchPost = async () => {
+  const fetchPosts = async () => {
     setLoader(true);
     try {
-      const res = await axios.get(URL + "/api/posts/" + search);
-      //console.log(res.data);
+      const res = await axios.get(URL + "/api/posts/user/" + user._id);
+      // console.log(res.data)
       setPosts(res.data);
       if (res.data.length === 0) {
-        //no data
         setNoResults(true);
       } else {
         setNoResults(false);
@@ -34,16 +31,16 @@ function Home() {
       setLoader(false);
     } catch (err) {
       console.log(err);
-      setLoader(false);
+      setLoader(true);
     }
   };
 
   useEffect(() => {
-    fetchPost();
+    fetchPosts();
   }, [search]);
 
   return (
-    <>
+    <div>
       <Navbar />
       <div className="px-8 md:px-[200px] min-h-[80vh]">
         {loader ? (
@@ -63,8 +60,8 @@ function Home() {
         )}
       </div>
       <Footer />
-    </>
+    </div>
   );
-}
+};
 
-export default Home;
+export default MyBlogs;

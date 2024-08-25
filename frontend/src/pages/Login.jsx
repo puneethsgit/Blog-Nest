@@ -1,7 +1,34 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Footer from "../components/Footer";
+import { useContext, useState } from "react";
+import axios from "axios";
+
+import { URL } from "../url";
+import { UserContext } from "../context/UserContext";
 
 const Login = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState(false);
+  const { setUser } = useContext(UserContext);
+  const navigate = useNavigate();
+
+  const handleLogin = async () => {
+    try {
+      const res = await axios.post(URL + "/api/auth/login", {
+        email,
+        password,
+      },{
+        withCredentials:true
+      });
+      console.log("login success");
+      setUser(res.data);
+      navigate("/ ");
+    } catch (err) {
+      setError(true);
+      console.log(err);
+    }
+  };
   return (
     <>
       <div className="flex items-center justify-between px-6 md:px-[200px] py-4  ">
@@ -18,18 +45,26 @@ const Login = () => {
             Login Your Account
           </h1>
           <input
+            onChange={(e) => setEmail(e.target.value)}
             type="text"
             className="w-full px-4 py-2 border-2 border-black outline-double"
             placeholder="Enter your Email"
           />
           <input
+            onChange={(e) => setPassword(e.target.value)}
             type="text"
             className="w-full px-4 py-2 border-2 border-black outline-double"
             placeholder="Enter your Password"
           />
-          <button className="w-full px-4 py-4 text-lg font-bold text-white bg-black rounded-lg hover:bg-blue-800 hover:text-black">
+          <button
+            onClick={handleLogin}
+            className="w-full px-4 py-4 text-lg font-bold text-white bg-black rounded-lg hover:bg-blue-800 hover:text-black"
+          >
             Login
           </button>
+          {error && (
+            <h3 className="text-red-500 text-sm">Something went wrong!</h3>
+          )}
           <div className="flex justify-center space-x-3 items-center">
             <p className="">Not Registered?</p>
             <p className="text-gray-500 hover:text-black">
@@ -38,7 +73,7 @@ const Login = () => {
           </div>
         </div>
       </div>
-      <Footer/>
+      <Footer />
     </>
   );
 };
