@@ -4,6 +4,7 @@ const User = require("../models/User.js");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const dotenv = require("dotenv");
+const verifyToken = require("../verifyToken.js");
 
 //middlewares
 dotenv.config();
@@ -36,12 +37,16 @@ router.post("/login", async (req, res) => {
       return res.status(401).json("Wrong Credentials");
     }
 
-    const token = jwt.sign({_id: user._id, username:user.username, email:user.email }, process.env.SECRET, {
-      expiresIn: "3d", 
-    });
+    const token = jwt.sign(
+      { _id: user._id, username: user.username, email: user.email },
+      process.env.SECRET,
+      {
+        expiresIn: "3d",
+      }
+    );
 
     const { password, ...info } = user._doc;
-    res.cookie("token", token, { httpOnly: true }).status(200).json(info); 
+    res.cookie("token", token, { httpOnly: true }).status(200).json(info);
   } catch (err) {
     res.status(500).json(err);
   }
@@ -60,15 +65,28 @@ router.get("/logout", async (req, res) => {
 });
 
 //REFECTCH User
-router.get("/refetch",(req,res)=>{
-  const token = req.cookies.token
-  jwt.verify(token,process.env.SECRET,{},async(err,data)=>{
-    if(err){
-      return res.status(404).json(err)
+// router.get("/refetch",(req,res)=>{
+//   const token = req.cookies.token
+//   jwt.verify(token,process.env.SECRET,async(err,data)=>{
+//     if(err){
+//       return res.status(404).json(err)
+//     }
+//     res.status(200).json(data) //before here what was there
+//   })
+// })
+router.get("/refetch", verifyToken, (req, res) => {
+  const token = req.cookies.token;
+  if (!token) {
+    return res.status(401).json("You are not authenticated");
+  }
+  jwt.verify(token, process.env.SECRET, async (err, data) => {
+    if (err) {
+      return res.status(403).json("Token is not valid");
     }
-    res.cookie("token", token, { httpOnly: true }).status(200).json(data); 
-    // res.status(200).json(data)
-  })
-})
+    req.userId = data._id;
+    //console.log("token working");
+    res.cookie("token", token, { httpOnly: true }).status(200).json(data);
+  });
+});
 
 module.exports = router;
