@@ -17,7 +17,7 @@ function Home() {
 
   const [loader, setLoader] = useState(false);
 
-  const {user} = useContext(UserContext)
+  const { user } = useContext(UserContext);
 
   const fetchPost = async () => {
     setLoader(true);
@@ -52,11 +52,12 @@ function Home() {
           </div>
         ) : !noResults ? (
           posts.map((post) => (
-            <>
-              <Link to={user ? `/posts/post/${post._id}` : "/login"}>
-                <HomePosts key={post._id} post={post} />
-              </Link>
-            </>
+            <Link
+              key={post._id}
+              to={user ? `/posts/post/${post._id}` : "/login"}
+            >
+              <HomePosts key={post._id} post={post} />
+            </Link>
           ))
         ) : (
           <h3 className="text-center font-bold mt-16">No posts available</h3>
