@@ -16,7 +16,13 @@ const Post = require("./models/Post"); // Adjust the path as necessary
 //middlewares
 dotenv.config();
 app.use(express.json());
-app.use(cors({ origin: process.env.PORT, credentials: true }));
+const corsOptions = {
+  origin: process.env.FRONTEND_URL,
+  methods: ["GET", "POST", "DELETE"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+  credentials: true,
+};
+app.use(cors(corsOptions));
 app.use(cookieParser());
 
 //routes middleware
