@@ -17,17 +17,16 @@ const Post = require("./models/Post"); // Adjust the path as necessary
 dotenv.config();
 app.use(express.json());
 
-console.log( process.env.FRONTEND_URL)
-const corsOptions = {
-  origin: process.env.FRONTEND_URL,
-  credentials: true,
-  methods: ["GET", "POST", "DELETE"],
-  //allowedHeaders: ["Content-Type", "Authorization"],
-  };
-console.log(corsOptions);
-app.use(cors(corsOptions));
-app.use(cookieParser());
+console.log(process.env.FRONTEND_URL);
+// const corsOptions = {
+//   origin: process.env.FRONTEND_URL,
+//   credentials: true,
+//   methods: ["GET", "POST", "DELETE"],
+//   //allowedHeaders: ["Content-Type", "Authorization"],
+//   };
 
+app.use(cors()); //middleware to handle 2-way routes
+app.use(cookieParser());
 
 //database
 main()
