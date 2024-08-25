@@ -1,63 +1,56 @@
 const express = require("express");
-const mongoose = require("mongoose"); // No need to destructure mongoose
+const { mongoose } = require("mongoose");
+const app = express();
 const dotenv = require("dotenv");
 const path = require("path");
 const cors = require("cors");
-const cookieParser = require("cookie-parser");
-const authRoute = require("./routes/auth");
-const userRoute = require("./routes/users");
-const postRoute = require("./routes/posts");
-const commentRoute = require("./routes/comments");
-const { storage } = require("./cloudconfig"); // Adjust the path as necessary
+const cookieParser = require(`cookie-parser`);
+const authRoute = require(`./routes/auth.js`);
+const userRoute = require(`./routes/users.js`);
+const postRoute = require(`./routes/posts.js`);
+const commentRoute = require(`./routes/comments.js`);
+const multer = require("multer");
+const { storage } = require("./cloudconfig.js");
+const Post = require("./models/Post"); // Adjust the path as necessary
 
-const app = express();
-
-// Load environment variables
+//middlewares
 dotenv.config();
-
-// Middleware
 app.use(express.json());
-app.use(cookieParser());
 
-// CORS configuration
+console.log( process.env.FRONTEND_URL)
 const corsOptions = {
   origin: process.env.FRONTEND_URL,
   credentials: true,
   methods: ["GET", "POST", "DELETE"],
-};
+  //allowedHeaders: ["Content-Type", "Authorization"],
+  };
+console.log(corsOptions);
 app.use(cors(corsOptions));
+app.use(cookieParser());
 
-// Connect to the database
-mongoose
-  .connect(process.env.MONGO_URL, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
+
+//database
+main()
   .then(() => {
-    console.log("Database connected successfully");
+    console.log("Database connected");
   })
-  .catch((err) => {
-    console.error("Database connection error:", err);
-  });
+  .catch((err) => console.log(err));
 
-// Route middlewares
+async function main() {
+  await mongoose.connect(process.env.mongoUrl);
+}
+
+//routes middleware
 app.use("/api/auth", authRoute);
 app.use("/api/users", userRoute);
 app.use("/api/posts", postRoute);
 app.use("/api/comments", commentRoute);
 
-// Simple route for testing
+//routes
 app.get("/home", (req, res) => {
-  res.send("Hello, welcome to the home route!");
+  res.send("hello");
 });
 
-// Error handling for undefined routes
-app.use((req, res, next) => {
-  res.status(404).send("Route not found");
-});
-
-// Start the server
-const PORT = process.env.PORT || 5000; // Default to 5000 if PORT is not defined
-app.listen(PORT, () => {
-  console.log(`Server is running at port number ${PORT}`);
+app.listen(process.env.port, () => {
+  console.log("Server is running at port number" + process.env.port);
 });

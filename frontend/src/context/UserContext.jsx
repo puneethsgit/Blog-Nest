@@ -1,3 +1,5 @@
+/* eslint-disable react/prop-types */
+
 import axios from "axios";
 import { createContext, useEffect, useState } from "react";
 import { URL } from "../url";
@@ -11,16 +13,14 @@ export function UserContextProvider({ children }) {
     getUser();
   }, []);
 
-
   const getUser = async () => {
     try {
-      const res = await axios.get(URL+ "/api/auth/refetch", {
+      const res = await axios.get(URL + "/api/auth/refetch", {
         withCredentials: true,
       });
-      //console.log(res);
-      setUser(res.data)
-    } 
-    catch (err) {
+      // console.log(res.data)
+      setUser(res.data);
+    } catch (err) {
       console.log(err);
     }
   };
@@ -31,4 +31,3 @@ export function UserContextProvider({ children }) {
     </UserContext.Provider>
   );
 }
-// vo ak error show ho rha tha 
