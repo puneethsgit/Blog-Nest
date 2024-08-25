@@ -22,17 +22,12 @@ const corsOptions = {
   origin: process.env.FRONTEND_URL,
   credentials: true,
   methods: ["GET", "POST", "DELETE"],
-  // allowedHeaders: ["Content-Type", "Authorization"],
-};
+  //allowedHeaders: ["Content-Type", "Authorization"],
+  };
 console.log(corsOptions);
 app.use(cors(corsOptions));
 app.use(cookieParser());
 
-//routes middleware
-app.use("/api/auth", authRoute);
-app.use("/api/users", userRoute);
-app.use("/api/posts", postRoute);
-app.use("/api/comments", commentRoute);
 
 //database
 main()
@@ -44,6 +39,12 @@ main()
 async function main() {
   await mongoose.connect(process.env.mongoUrl);
 }
+
+//routes middleware
+app.use("/api/auth", authRoute);
+app.use("/api/users", userRoute);
+app.use("/api/posts", postRoute);
+app.use("/api/comments", commentRoute);
 
 //routes
 app.get("/home", (req, res) => {

@@ -8,9 +8,6 @@ const Comment = require("../models/Comment");
 const verifyToken = require(`../verifyToken`);
 
 
-router.get("/", (req,res)=>{
-    res.json({success: "Hello user"})
-});
 //Update
 router.put("/:id", verifyToken, updateUser);
 
