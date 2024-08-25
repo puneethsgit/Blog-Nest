@@ -44,7 +44,7 @@ async function main() {
 
 //routes
 app.get("/home", (req, res) => {
-  res.send("welcome");
+  res.send("hello");
 });
 
 app.listen(process.env.port, () => {
