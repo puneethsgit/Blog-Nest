@@ -24,10 +24,16 @@ async function main() {
 }
 
 //middlewares
-
-app.use(express.json());
 const url = process.env.FRONTEND_URL;
-app.use(cors({ origin: url, credentials: true }));
+const corsOptions = {
+  origin: process.env.FRONTEND_URL,
+  methods: ["GET", "POST", "DELETE"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+  credentials: true,
+};
+
+app.use(cors(corsOptions));
+app.use(express.json());
 app.use(cookieParser());
 
 //routes middleware
