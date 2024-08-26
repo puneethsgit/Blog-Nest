@@ -76,7 +76,7 @@ Follow these steps to set up and run the project locally:
     Backend Folder :
 
     ```bash
-    npm run dev
+    nodemon index.js
     ```
 
 5.  **Open in Your Browser:**
