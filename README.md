@@ -52,10 +52,10 @@ Follow these steps to set up and run the project locally:
     Backend Folder :
 
     ```bash
-   FRONTEND_URL=http://localhost:5173
-   mongoUrl="mongodb+srv://puneethblognest:princepuneeth@cluster0.cojpe.mongodb.net/"
-   port=8080
-   SECRET="mysuperpassword"
+       FRONTEND_URL=http://localhost:5173
+       mongoUrl="mongodb+srv://puneethblognest:princepuneeth@cluster0.cojpe.mongodb.net/"
+       port=8080
+       SECRET="mysuperpassword"
 
     ```
 
