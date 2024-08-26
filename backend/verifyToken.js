@@ -1,17 +1,23 @@
 const jwt = require("jsonwebtoken");
 
 const verifyToken = (req, res, next) => {
-  // Retrieve the token from local storage
-  const token =
-    req.headers["authorization"]?.split(" ")[1] || req.cookies.token;
+  const token = req.cookies.token;
+  // console.log(token)
   if (!token) {
-    return res.status(401).json("You are not authenticated!");
+    return res.status(401).json({ message: "You are not authenticated!" });
   }
-  jwt.verify(token, process.env.SECRET, async (err, data) => {
+
+  jwt.verify(token, process.env.SECRET, (err, data) => {
     if (err) {
-      return res.status(403).json("Token is not valid!");
+      return res
+        .status(403)
+        .json({ message: "Token is not valid!", error: err.message });
     }
+
     req.userId = data._id;
+
+    // console.log("passed")
+
     next();
   });
 };
