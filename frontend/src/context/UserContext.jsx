@@ -10,6 +10,11 @@ export function UserContextProvider({ children }) {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
+    // Get the user data and token from local storage
+    const token = localStorage.getItem("token");
+    if (token) {
+      axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+    }
     getUser();
   }, []);
 
@@ -18,15 +23,35 @@ export function UserContextProvider({ children }) {
       const res = await axios.get(URL + "/api/auth/refetch", {
         withCredentials: true,
       });
-      // console.log(res.data)
       setUser(res.data);
     } catch (err) {
       console.log(err);
     }
   };
 
+  const login = async (credentials) => {
+    try {
+      const res = await axios.post(URL + "/api/auth/login", credentials, {
+        withCredentials: true,
+      });
+      // Store the token in local storage
+      localStorage.setItem("token", res.data.token);
+      axios.defaults.headers.common[
+        "Authorization"
+      ] = `Bearer ${res.data.token}`;
+      setUser(res.data.user);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const logout = () => {
+    localStorage.removeItem("token");
+    setUser(null);
+  };
+
   return (
-    <UserContext.Provider value={{ user, setUser }}>
+    <UserContext.Provider value={{ user, setUser, login, logout }}>
       {children}
     </UserContext.Provider>
   );
