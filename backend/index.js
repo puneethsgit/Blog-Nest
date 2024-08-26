@@ -28,7 +28,7 @@ async function main() {
 const corsOptions = {
   origin: process.env.FRONTEND_URL,
   methods: ["GET", "POST", "DELETE"],
-  allowedHeaders: ["Content-Type", "Authorization"],
+  //allowedHeaders: ["Content-Type", "Authorization"],
   credentials: true,
 };
 
