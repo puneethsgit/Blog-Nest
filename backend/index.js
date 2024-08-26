@@ -24,7 +24,7 @@ async function main() {
 }
 
 //middlewares
-const url = process.env.FRONTEND_URL;
+// const url = process.env.FRONTEND_URL;
 const corsOptions = {
   origin: process.env.FRONTEND_URL,
   methods: ["GET", "POST", "DELETE"],
