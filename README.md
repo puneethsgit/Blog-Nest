@@ -87,5 +87,5 @@ Open `http://localhost:5173` in your web browser.
 
 Puneeth S \
 Email: puneethspunii@gmail.com \
-LinkedIn : [https://www.linkedin.com/in/puneeth-s-186078260/] (https://www.linkedin.com/in/puneeth-s-186078260/)
+LinkedIn : https://www.linkedin.com/in/puneeth-s-186078260/
 
