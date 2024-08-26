@@ -13,7 +13,7 @@ Please do not use the deployed link at this time. The frontend is working fine, 
 - **Node.js:** JavaScript runtime for server-side development.
 - **React.js:** A JavaScript library for building reusable UI components and efficient single-page application views.
 - **Tailwind CSS:** A utility-first CSS framework for rapid UI development.
-- **React-Toastify:** A JavaScript library for providing toast notifications in React.
+
 
 ## How to Install
 
