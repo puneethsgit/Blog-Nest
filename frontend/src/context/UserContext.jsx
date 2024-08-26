@@ -45,6 +45,20 @@ export function UserContextProvider({ children }) {
     }
   };
 
+  // When making requests
+  const createPost = async (postData) => {
+    try {
+      const res = await axios.post(URL + "/api/posts/create", postData, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+      // Handle success
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   const logout = () => {
     localStorage.removeItem("token");
     setUser(null);
