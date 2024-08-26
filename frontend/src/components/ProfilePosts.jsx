@@ -1,5 +1,6 @@
 /* eslint-disable react/prop-types */
 
+
 const ProfilePosts = ({ p }) => {
   // console.log(p)
   return (

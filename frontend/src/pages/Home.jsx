@@ -1,32 +1,29 @@
+import axios from "axios";
+import Footer from "../components/Footer";
 import HomePosts from "../components/HomePosts";
 import Navbar from "../components/Navbar";
-import Footer from "../components/Footer";
-import axios from "axios";
-import { useContext, useEffect, useState } from "react";
 import { URL } from "../url";
-import { useLocation, Link } from "react-router-dom";
+import { useContext, useEffect, useState } from "react";
+import { Link, useLocation } from "react-router-dom";
 import Loader from "../components/Loader";
 import { UserContext } from "../context/UserContext";
 
-function Home() {
+const Home = () => {
   const { search } = useLocation();
-
+  // console.log(search)
   const [posts, setPosts] = useState([]);
-
   const [noResults, setNoResults] = useState(false);
-
   const [loader, setLoader] = useState(false);
-
   const { user } = useContext(UserContext);
+  // console.log(user)
 
-  const fetchPost = async () => {
+  const fetchPosts = async () => {
     setLoader(true);
     try {
       const res = await axios.get(URL + "/api/posts/" + search);
-      //console.log(res.data);
+      // console.log(res.data)
       setPosts(res.data);
       if (res.data.length === 0) {
-        //no data
         setNoResults(true);
       } else {
         setNoResults(false);
@@ -34,12 +31,12 @@ function Home() {
       setLoader(false);
     } catch (err) {
       console.log(err);
-      setLoader(false);
+      setLoader(true);
     }
   };
 
   useEffect(() => {
-    fetchPost();
+    fetchPosts();
   }, [search]);
 
   return (
@@ -56,7 +53,7 @@ function Home() {
               key={post._id}
               to={user ? `/posts/post/${post._id}` : "/login"}
             >
-              <HomePosts key={post._id} post={post} />
+              <HomePosts post={post} />
             </Link>
           ))
         ) : (
@@ -66,6 +63,6 @@ function Home() {
       <Footer />
     </>
   );
-}
+};
 
 export default Home;

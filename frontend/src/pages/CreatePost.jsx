@@ -42,7 +42,7 @@ const CreatePost = () => {
     };
 
     //post upload
-    // console.log(post)
+    console.log(post);
     try {
       const res = await axios.post(URL + "/api/posts/create", post, {
         withCredentials: true,
@@ -69,7 +69,7 @@ const CreatePost = () => {
           <input
             onChange={(e) => setPhoto(e.target.value)}
             type="text"
-            placeholder="Enter the valid URL of the image"
+            placeholder="Enter Valid Image URL"
             className="px-4 py-2 outline-none"
           />
           <div className="flex flex-col">

@@ -84,8 +84,8 @@ const EditPost = () => {
           />
           <input
             onChange={(e) => setPhoto(e.target.value)}
-            value={photo}
             type="text"
+            placeholder="Enter Valid Image URL"
             className="px-4 py-2 outline-none"
           />
           <div className="flex flex-col">

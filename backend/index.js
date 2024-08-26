@@ -1,34 +1,17 @@
 const express = require("express");
-const { mongoose } = require("mongoose");
 const app = express();
+const mongoose = require("mongoose");
 const dotenv = require("dotenv");
-const path = require("path");
 const cors = require("cors");
-const cookieParser = require(`cookie-parser`);
-const authRoute = require(`./routes/auth.js`);
-const userRoute = require(`./routes/users.js`);
-const postRoute = require(`./routes/posts.js`);
-const commentRoute = require(`./routes/comments.js`);
 const multer = require("multer");
-const { storage } = require("./cloudconfig.js");
-const Post = require("./models/Post"); // Adjust the path as necessary
+const path = require("path");
+const cookieParser = require("cookie-parser");
+const authRoute = require("./routes/auth");
+const userRoute = require("./routes/users");
+const postRoute = require("./routes/posts");
+const commentRoute = require("./routes/comments");
 
-//middlewares
 dotenv.config();
-app.use(express.json());
-
-console.log( process.env.FRONTEND_URL)
-const corsOptions = {
-  origin: process.env.FRONTEND_URL,
-  credentials: true,
-  methods: ["GET", "POST", "DELETE"],
-  //allowedHeaders: ["Content-Type", "Authorization"],
-  };
-console.log(corsOptions);
-app.use(cors(corsOptions));
-app.use(cookieParser());
-
-
 //database
 main()
   .then(() => {
@@ -39,6 +22,13 @@ main()
 async function main() {
   await mongoose.connect(process.env.mongoUrl);
 }
+
+//middlewares
+
+app.use(express.json());
+const url = process.env.FRONTEND_URL;
+app.use(cors({ origin: url, credentials: true }));
+app.use(cookieParser());
 
 //routes middleware
 app.use("/api/auth", authRoute);

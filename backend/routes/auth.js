@@ -1,15 +1,10 @@
 const express = require("express");
 const router = express.Router();
-const User = require("../models/User.js");
+const User = require("../models/User");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const dotenv = require("dotenv");
-const verifyToken = require("../verifyToken.js");
 
-//middlewares
-dotenv.config();
-
-// Register User
+//REGISTER
 router.post("/register", async (req, res) => {
   try {
     const { username, email, password } = req.body;
@@ -23,40 +18,36 @@ router.post("/register", async (req, res) => {
   }
 });
 
-// Login
+//LOGIN
 router.post("/login", async (req, res) => {
   try {
     const user = await User.findOne({ email: req.body.email });
 
     if (!user) {
-      return res.status(404).json("User Not Found!");
+      return res.status(404).json("User not found!");
     }
-
     const match = await bcrypt.compare(req.body.password, user.password);
-    if (!match) {
-      return res.status(401).json("Wrong Credentials");
-    }
 
+    if (!match) {
+      return res.status(401).json("Wrong credentials!");
+    }
     const token = jwt.sign(
       { _id: user._id, username: user.username, email: user.email },
       process.env.SECRET,
-      {
-        expiresIn: "3d",
-      }
+      { expiresIn: "3d" }
     );
-
     const { password, ...info } = user._doc;
-    res.cookie("token", token, { httpOnly: true }).status(200).json(info);
+    res.cookie("token", token).status(200).json(info);
   } catch (err) {
     res.status(500).json(err);
   }
 });
 
-// Logout
+//LOGOUT
 router.get("/logout", async (req, res) => {
   try {
     res
-      .clearCookie("token", { samesite: "none", secure: true })
+      .clearCookie("token", { sameSite: "none", secure: true })
       .status(200)
       .send("User logged out successfully!");
   } catch (err) {
@@ -64,30 +55,15 @@ router.get("/logout", async (req, res) => {
   }
 });
 
-//REFECTCH User
-// router.get("/refetch",(req,res)=>{
-//   const token = req.cookies.token
-//   jwt.verify(token,process.env.SECRET,async(err,data)=>{
-//     if(err){
-//       return res.status(404).json(err)
-//     }
-//     res.status(200).json(data) //before here what was there
-//   })
-// })
-router.get("/refetch", verifyToken, (req, res) => {
+//REFETCH USER
+router.get("/refetch", (req, res) => {
   const token = req.cookies.token;
-  if (!token) {
-    return res.status(401).json("You are not authenticated");
-  }
-  jwt.verify(token, process.env.SECRET, async (err, data) => {
+  jwt.verify(token, process.env.SECRET, {}, async (err, data) => {
     if (err) {
-      return res.status(403).json("Token is not valid");
+      return res.status(404).json(err);
     }
-    req.userId = data._id;
-    //console.log("token working");
-    res.cookie("token", token, { httpOnly: true }).status(200).json(data);
+    res.status(200).json(data);
   });
 });
 
 module.exports = router;
-

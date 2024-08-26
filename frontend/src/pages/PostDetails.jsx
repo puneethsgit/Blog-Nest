@@ -5,7 +5,7 @@ import Navbar from "../components/Navbar";
 import { BiEdit } from "react-icons/bi";
 import { MdDelete } from "react-icons/md";
 import axios from "axios";
-import { URL} from "../url";
+import { URL } from "../url";
 import { useContext, useEffect, useState } from "react";
 import { UserContext } from "../context/UserContext";
 import Loader from "../components/Loader";
@@ -123,11 +123,9 @@ const PostDetails = () => {
             <p>Categories:</p>
             <div className="flex justify-center items-center space-x-2">
               {post.categories?.map((c, i) => (
-                <>
-                  <div key={i} className="bg-gray-300 rounded-lg px-3 py-1">
-                    {c}
-                  </div>
-                </>
+                <div key={i} className="bg-gray-300 rounded-lg px-3 py-1">
+                  {c}
+                </div>
               ))}
             </div>
           </div>
