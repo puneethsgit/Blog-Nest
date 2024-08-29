@@ -1,10 +1,10 @@
 # BlogNest
 
-BlogNest is a full-stack blogging application built using the MERN stack. It provides a platform for users to create, read, update, and delete blog posts. The project includes authentication features like sign-up and login and utilizes Tailwind CSS for a responsive and modern user interface.
+BlogNest is a full-stack blogging application built using the MERN stack. It provides a platform for users to create, read, update, and delete blog posts. The project includes authentication features like sign-up and login and utilizes Tailwind CSS for a responsive and modern user interface
 
 ## Disclaimer
 
-Please do not use the deployed link at this time. The frontend is working fine, but there is an issue with the backend due to a CORS policy origin error on Vercel.
+The frontend is functioning correctly, but there's a backend issue due to a CORS policy origin error on Vercel.
 
 ## Technologies & Packages Used
 
